@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>happy birthday</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url('cute2.jpg'); /* Add your image here */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #ffffff;
+            font-family: 'Nunito', sans-serif;
+            overflow: hidden; 
+        }
+
+        #lights-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40vh; 
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .light {
+            position: absolute;
+            background-color: #f1a3b1;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px rgba(241, 163, 177, 0.6);
+        }
+
+        #timeline-section {
+            /* Keep all your other settings here */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+            background-color: transparent; /* Changed to transparent! */
+            z-index: 100; 
+        }
+        .year-text {
+            position: absolute;
+            font-size: 160px; 
+            font-weight: 900; 
+            font-family: 'Nunito', sans-serif;
+            color: #ffffff; 
+            letter-spacing: 5px;
+            opacity: 0; 
+            
+            text-shadow: 
+                -2px -2px 0 #000,  
+                 2px -2px 0 #000,
+                -2px  2px 0 #000,
+                 2px  2px 0 #000,
+                 3px  3px 0 #000,
+                 4px  4px 0 #000,
+                 5px  5px 0 #000,
+                 6px  6px 0 #000,
+                 7px  7px 0 #000,
+                 8px  8px 0 #000,
+                 9px  9px 0 #000,
+                10px 10px 0 #000,
+                11px 11px 0 #000,
+                12px 12px 0 #000,
+                15px 15px 30px rgba(0,0,0,0.8); 
+        }
+
+        #cake-section {
+            /* Keep all your other settings here */
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            
+            background-color: transparent; /* Changed to transparent! */
+            z-index: 10;
+        }
+
+        .instruction-text {
+            color: #f1a3b1;
+            margin-bottom: 10px;
+            height: 40px;
+            font-family: 'Caveat', cursive;
+            font-size: 36px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(241, 163, 177, 0.3);
+        }
+
+        #cake-svg {
+            width: 95vw;
+            max-width: 600px;
+            height: auto;
+            cursor: pointer;
+            overflow: visible;
+        }
+
+        .inside-layer {
+            opacity: 0;
+        }
+
+        .final-message {
+            margin-top: 10px;
+            font-size: 42px;
+            font-family: 'Caveat', cursive;
+            color: #e8c678;
+            opacity: 0;
+            text-align: center;
+            font-weight: 700;
+            z-index: 20;
+            text-shadow: 0 4px 15px rgba(232, 198, 120, 0.4);
+        }
+        #next-surprise-btn {
+            margin-top: 40px;
+            padding: 12px 35px;
+            font-size: 20px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 900;
+            color: #1a1a24;
+            background-color: #e8c678;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            opacity: 0; /* Keeps it invisible initially */
+            box-shadow: 0 4px 15px rgba(232, 198, 120, 0.4);
+            transition: transform 0.2s ease;
+            z-index: 20;
+            pointer-events: none; /* Prevents accidental clicking before it appears */
+        }
+
+        #next-surprise-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lights-container"></div>
+    <div id="timeline-section"></div>
+
+    <div id="cake-section">
+        <div class="instruction-text" id="instruction">Tap the candle to make a wish...</div>
+        
+        <svg id="cake-svg" viewBox="0 0 600 500">
+            <defs>
+                <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="6" stdDeviation="4" flood-color="#d63031" flood-opacity="0.15" />
+                </filter>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="10" result="coloredBlur"/>
+                    <feMerge>
+                        <feMergeNode in="coloredBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+
+            <!-- Plate -->
+            <ellipse cx="300" cy="445" rx="260" ry="30" fill="#15151e" />
+            <ellipse cx="300" cy="440" rx="260" ry="30" fill="#2a2a36" />
+            <ellipse cx="300" cy="440" rx="230" ry="24" fill="#3a3a4a" />
+            
+            <!-- MAIN CAKE -->
+            <g id="main-cake">
+                <g class="inside-layer">
+                    <rect x="350" y="235" width="30" height="185" fill="#ffeaa7" />
+                    <rect x="350" y="280" width="30" height="20" fill="#ff7675" />
+                    <rect x="350" y="350" width="30" height="20" fill="#ff7675" />
+                </g>
+
+                <path d="M 80 420 L 80 260 Q 80 220 300 230 Q 340 232 380 235 L 380 420 Z" fill="#fd79a8" />
+                <path d="M 80 260 Q 80 220 300 230 Q 340 232 380 235 L 380 295 Q 340 315 300 285 Q 260 310 220 280 Q 180 310 140 280 Q 110 300 80 260 Z" fill="#fffdfc" filter="url(#drop-shadow)" />
+                
+                <circle cx="140" cy="260" r="5" fill="#feca57" />
+                <circle cx="200" cy="245" r="6" fill="#feca57" />
+                <circle cx="280" cy="265" r="4" fill="#feca57" />
+                <circle cx="340" cy="255" r="5" fill="#feca57" />
+
+                <circle cx="95" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="125" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="155" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="185" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="215" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="245" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="275" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="305" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="335" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="365" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+
+                <text x="230" y="340" font-family="'Caveat', cursive" font-size="50" fill="#ffffff" font-weight="bold" text-anchor="middle" transform="rotate(-3 230 340)">Happy</text>
+                <text x="230" y="390" font-family="'Caveat', cursive" font-size="50" fill="#ffffff" font-weight="bold" text-anchor="middle" transform="rotate(-3 230 390)">Birthday</text>
+                
+                <g id="candle-group">
+                    <rect x="218" y="100" width="24" height="130" fill="#74b9ff" rx="6" />
+                    <line x1="218" y1="120" x2="242" y2="110" stroke="#ffffff" stroke-width="5" />
+                    <line x1="218" y1="150" x2="242" y2="140" stroke="#ffffff" stroke-width="5" />
+                    <line x1="218" y1="180" x2="242" y2="170" stroke="#ffffff" stroke-width="5" />
+                    <line x1="218" y1="210" x2="242" y2="200" stroke="#ffffff" stroke-width="5" />
+                    <line x1="230" y1="100" x2="230" y2="85" stroke="#333" stroke-width="3" />
+                    
+                    <circle id="flame-glow" cx="230" cy="50" r="35" fill="#feca57" opacity="0.4" filter="url(#glow)" />
+                    <path id="flame" d="M 230 85 Q 210 60 230 20 Q 250 60 230 85" fill="#ff9f43" />
+                    <path id="flame-inner" d="M 230 80 Q 220 65 230 45 Q 240 65 230 80" fill="#feca57" />
+                </g>
+            </g>
+            
+            <!-- THE SLICE -->
+            <g id="cake-slice">
+                <g class="inside-layer">
+                    <rect x="380" y="235" width="30" height="185" fill="#ffeaa7" />
+                    <rect x="380" y="280" width="30" height="20" fill="#ff7675" />
+                    <rect x="380" y="350" width="30" height="20" fill="#ff7675" />
+                </g>
+
+                <path d="M 380 235 Q 450 225 520 260 L 520 420 L 380 420 Z" fill="#fd79a8" />
+                <path d="M 380 235 Q 450 225 520 260 L 520 260 Q 490 300 460 280 Q 420 310 380 295 Z" fill="#fffdfc" filter="url(#drop-shadow)" />
+                
+                <circle cx="430" cy="250" r="6" fill="#feca57" />
+                <circle cx="480" cy="260" r="4" fill="#feca57" />
+
+                <circle cx="395" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="425" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="455" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="485" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+                <circle cx="505" cy="420" r="15" fill="#fffdfc" filter="url(#drop-shadow)" />
+            </g>
+
+            <!-- THE KNIFE -->
+            <g id="knife-group" opacity="0" style="transform: translateY(-100px);">
+                <path d="M 368 80 L 388 80 L 384 260 L 376 260 Z" fill="#dcdde1" />
+                <path d="M 368 80 L 376 80 L 376 260 L 376 260 Z" fill="#f5f6fa" />
+                <rect x="366" y="0" width="24" height="80" fill="#2f3640" rx="4" />
+                <rect x="366" y="70" width="24" height="12" fill="#e1b12c" />
+                <rect x="366" y="0" width="24" height="8" fill="#e1b12c" rx="2" />
+            </g>
+
+        </svg>
+
+        <div class="final-message" id="final-message">
+            Happy 19th Birthday, Bestie❣️! <br> 
+            <span style="font-size: 26px; color: #ffffff;">(You're the sweetest slice of life)</span>
+            <button id="next-surprise-btn" onclick="window.location.href='cake.html'">Next Surprise ➔</button>
+        </div>
+    </div>
+    
+
+   <script>
+        // Lights
+        const lightsContainer = document.getElementById('lights-container');
+        for (let i = 0; i < 40; i++) {
+            let light = document.createElement('div');
+            light.classList.add('light');
+            let size = Math.random() * 4 + 2; 
+            light.style.width = size + 'px';
+            light.style.height = size + 'px';
+            light.style.left = Math.random() * 100 + 'vw';
+            light.style.top = Math.random() * 40 + 'vh'; 
+            lightsContainer.appendChild(light);
+
+            gsap.to(light, {
+                opacity: Math.random() * 0.4 + 0.1,
+                scale: Math.random() * 0.5 + 0.5,
+                duration: Math.random() * 1.5 + 0.5,
+                repeat: -1, yoyo: true, ease: "sine.inOut", delay: Math.random() * 2
+            });
+        }
+
+        // Timeline Setup
+        const timelineSection = document.getElementById('timeline-section');
+        // Updated to start from 2007 for 19 years!
+        for (let y = 2007; y <= 2026; y++) {
+            let yearDiv = document.createElement('div');
+            yearDiv.classList.add('year-text');
+            yearDiv.innerText = y;
+            timelineSection.appendChild(yearDiv);
+        }
+
+        const years = gsap.utils.toArray('.year-text');
+        let tl = gsap.timeline({
+            onComplete: () => {
+                gsap.to(timelineSection, { opacity: 0, duration: 1, onComplete: () => {
+                    timelineSection.style.display = 'none';
+                }});
+            }
+        });
+
+        // The 3D Rolling Up Animation
+        years.forEach((year, i) => {
+            gsap.set(year, { y: 250, rotationX: -70, opacity: 0, transformPerspective: 600, scale: 1 });
+            
+            tl.to(year, { y: 0, rotationX: 0, opacity: 1, duration: 0.5, ease: "back.out(1.5)" }, i * 0.4)
+              .to(year, { y: -250, rotationX: 70, opacity: 0, duration: 0.4, ease: "power2.in" }, (i * 0.4) + 0.6); 
+        });
+
+        // Interactive Cake
+        const cakeSvg = document.getElementById('cake-svg');
+        const instruction = document.getElementById('instruction');
+        const finalMessage = document.getElementById('final-message');
+        
+        let cakeStep = 0;
+
+        // Flame animation
+        gsap.to(['#flame', '#flame-inner', '#flame-glow'], {
+            scaleX: 0.9, scaleY: 1.1, transformOrigin: "bottom center",
+            duration: 0.1, repeat: -1, yoyo: true,
+            ease: "rough({ strength: 1, points: 20, randomize: true })"
+        });
+
+        // Fireworks
+        function launchFireworks() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 35, spread: 360, ticks: 60, zIndex: 100 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) { return clearInterval(interval); }
+                var particleCount = 60 * (timeLeft / duration);
+                
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        cakeSvg.addEventListener('click', () => {
+            if (cakeStep === 0) {
+                // 1. Blow out candle
+                gsap.to(['#flame', '#flame-inner', '#flame-glow'], { opacity: 0, scale: 0, duration: 0.5, ease: "power2.in" });
+                
+                // 2. Bring down the knife
+                gsap.to('#knife-group', { y: 30, opacity: 1, duration: 1, delay: 0.5, ease: "back.out(1.2)" });
+                
+                // Add a gentle floating animation to the knife while waiting for the cut
+                gsap.to('#knife-group', { y: 40, duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 1.5 });
+
+                gsap.to(instruction, { opacity: 0, duration: 0.3, onComplete: () => {
+                    instruction.innerText = "Tap again to cut the cake!";
+                    gsap.to(instruction, { opacity: 1, duration: 0.5 });
+                }});
+                cakeStep++;
+            } 
+            else if (cakeStep === 1) {
+                // Stop the floating knife animation immediately
+                gsap.killTweensOf('#knife-group');
+
+                gsap.to(instruction, { opacity: 0, duration: 0.3 }); 
+                
+                // Create a synchronized timeline for the cut and pull
+                let sliceTl = gsap.timeline();
+
+                // Correctly placed timeline that includes the button fade-in
+                sliceTl.to('#knife-group', { y: 180, duration: 0.4, ease: "power2.in" }) 
+                       .to('.inside-layer', { opacity: 1, duration: 0.1 }, "-=0.1") 
+                       .to('#knife-group', { y: 350, opacity: 0, duration: 0.5, ease: "power2.in" }, "+=0.1") 
+                       .to('#cake-slice', { x: 70, y: 15, rotation: 5, transformOrigin: "bottom right", duration: 1.2, ease: "power3.out" }, "-=0.4") 
+                       .to(finalMessage, { opacity: 1, y: -20, duration: 1, ease: "power2.out" }, "-=0.8")
+                       .to('#next-surprise-btn', { opacity: 1, pointerEvents: "auto", y: -20, duration: 1, ease: "power2.out" }, "-=0.5"); 
+
+                // Trigger fireworks perfectly timed with the slice sliding out
+                setTimeout(launchFireworks, 1000);
+                
+                cakeStep++;
+            }
+        });
+    </script>
+</body>
+</html>

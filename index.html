@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday</title>
+    <link rel="stylesheet" href="style.css">
+    <title>Background Image Example</title>
+    <style>
+        body {
+            /* 1. Add the image URL */
+            background-image: url('asset/cute2.jpg');
+            
+            /* 2. Make it cover the entire screen */
+            background-size: cover;
+            
+            /* 3. Center the image */
+            background-position: center;
+            
+            /* 4. Prevent the image from repeating like tiles */
+            background-repeat: no-repeat;
+            
+            /* Optional: Keeps the image fixed in place when you scroll */
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container" id="quiz-app">
+        <!-- Circular GIF area -->
+        <div class="gif-container">
+            <img src="https://media.giphy.com/media/l41YkxvU8c7J7Bba0/giphy.gif" alt="Funny GIF" class="gif-image" id="quiz-gif">
+        </div>
+
+        <!-- Question Box Area -->
+        <div class="question-wrapper" id="question-area">
+            <div class="decoration flower-top-left">🌸</div>
+            <div class="decoration balloon-right">🎈</div>
+            <div class="decoration flower-bottom-right">🌸</div>
+            
+            <!-- Question/Answer Box -->
+            <div class="question-box" id="question-text">
+                Loading Question...
+            </div>
+        </div>
+
+        <!-- Yes / No Buttons -->
+        <div class="button-container" id="yes-no-buttons">
+            <button onclick="handleAnswer(true)">[yes]</button>
+            <button onclick="handleAnswer(false)">[no]</button>
+        </div>
+
+        <!-- Previous / Next Buttons (Hidden initially) -->
+        <div class="button-container" id="nav-buttons" style="display: none;">
+            
+            <button id="prev-btn" onclick="goPrevious()">[Previous]</button>
+            <button id="next-btn" onclick="goNext()">[Next]</button>
+            
+        </div>
+    </div>
+
+  
+   <!-- Final Result display -->
+    <div class="quiz-container" id="result-container">
+         <div class="gif-container">
+            <img src="./gif/yay-yeah.gif" alt="Funny GIF" class="gif-image" id="quiz-gif">
+        </div>
+        <h2 id="final-score"></h2>
+        <!-- Change the link inside the quotes to your next HTML file name -->
+        <button onclick="window.location.href='google.html'">[Next Surprise!]</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
